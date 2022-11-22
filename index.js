@@ -9,6 +9,7 @@ const { query } = require('express');
 let MongoClient = Mongo.MongoClient;
 let mongouturl = process.env.LiveMongo;
 let bodyparser = require('body-parser')
+const ObjectID = require('mongodb').ObjectId;
 let db;
 
 app.use(bodyparser.urlencoded({extended:true}))
@@ -16,7 +17,7 @@ app.use(bodyparser.json())
 
 app.use(cors());
 
-// 
+// base
 app.get('/',(req,res)=>{
     db.collection('Allpacks').find().toArray((err,result)=>{
         if(err) {
@@ -28,6 +29,8 @@ app.get('/',(req,res)=>{
 } 
 )
 
+
+
 // list all data in database which is connected---------------------------------
 
 app.get('/plans',(req,res)=>{
@@ -37,6 +40,20 @@ app.get('/plans',(req,res)=>{
     })
 } 
 )
+
+
+//filter plans by id---------------------------------
+
+app.get('/plans/:id',(req,res) => {
+    let _id = ObjectID(req.params.id)
+    db.collection('Allpacks').find({"_id":_id}).toArray((err,result)=>{
+        if(err){
+            console.log(err , "err while filter the user");
+            res.send("something went wrong in server")
+        } 
+        res.send(result)
+    })
+})
 
 
 //filter type respect to cost---------------------------------
