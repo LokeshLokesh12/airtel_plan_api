@@ -77,8 +77,29 @@ app.get('/filter/:type',(req,res)=>{
     })
 })
 
+// list all data in database which is connected---------------------------------
+
+app.get('/fiber',(req,res)=>{
+    db.collection('Fiber').find().toArray((err,result)=>{
+        if(err) console.log(err , "err while listing");
+        res.send(result)
+    })
+} 
+)
 
 
+//filter plans by id---------------------------------
+
+app.get('/fiber/:id',(req,res) => {
+    let _id = ObjectID(req.params.id)
+    db.collection('Fiber').find({"_id":_id}).toArray((err,result)=>{
+        if(err){
+            console.log(err , "err while filter the user");
+            res.send("something went wrong in server")
+        } 
+        res.send(result)
+    })
+})
 // connect with database---------------------------------
 
 MongoClient.connect(mongouturl,(err,client)=>{
