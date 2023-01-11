@@ -94,12 +94,37 @@ app.get('/fiber/:id',(req,res) => {
     let _id = ObjectID(req.params.id)
     db.collection('Fiber').find({"_id":_id}).toArray((err,result)=>{
         if(err){
-            console.log(err , "err while filter the user");
+            console.log(err , "err while find the fiber plan");
             res.send("something went wrong in server")
         } 
         res.send(result)
     })
 })
+// list all data in database which is related to dth  ---------------------------------
+
+app.get('/dth',(req,res)=>{
+    db.collection('Dth').find().toArray((err,result)=>{
+        if(err) console.log(err , "err while listing");
+        res.send(result)
+    })
+})
+
+//filter plans by id---------------------------------
+
+
+app.get('/dth/:id',(req,res) => {
+    let _id = ObjectID(req.params.id)
+    db.collection('Dth').find({"_id":_id}).toArray((err,result)=>{
+        if(err){
+            console.log(err , "err while find the fiber plan");
+            res.send("something went wrong in server")
+        } 
+        res.send(result)
+    })
+})
+
+// sim request
+
 // connect with database---------------------------------
 
 MongoClient.connect(mongouturl,(err,client)=>{
@@ -108,8 +133,7 @@ MongoClient.connect(mongouturl,(err,client)=>{
   
     app.listen(port,()=>{
         console.log('servre is runnun in ' + port )
-    })
-    
+    }) 
 })
 
 
